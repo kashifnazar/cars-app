@@ -12,16 +12,16 @@ import Title from 'antd/es/typography/Title'
 const { Search } = Input
 
 const headerStyle: React.CSSProperties = {
-    textAlign: 'center',
-    color: '#fff',
-    height: 64,
-    paddingInline: 50,
-    lineHeight: '64px',
-    backgroundColor: '#eee',
+	textAlign: 'center',
+	color: '#fff',
+	height: 64,
+	paddingInline: 50,
+	lineHeight: '64px',
+	backgroundColor: '#eee',
 }
 
 const buttonStyle: React.CSSProperties = {
-    borderRadius: 0
+	borderRadius: 0
 }
 
 export type SearchConfig = {
@@ -37,90 +37,88 @@ export type SaveConfig<T> = {
 type Props<T extends Record<PropertyKey, any>> = {
     columns: TableColumnsType<T>
     dataSource: Array<T>
-    search?: SearchConfig
     save?: SaveConfig<T>
     title?: string
     isLoading?: boolean
 }
 
-function DataTable<T extends Record<PropertyKey, any>>({ title, columns, dataSource, search, save, isLoading}: Props<T>) {
+function DataTable<T extends Record<PropertyKey, any>>({ title, columns, dataSource, save, isLoading}: Props<T>) {
 
-    const [messageApi, contextHolder] = message.useMessage();
+	const [messageApi, contextHolder] = message.useMessage()
 
 
-    // const {submit, reset, form, fields, error, populate} = useEntityForm({
-    //     columns,
-    //     name: 'Form',
-    //     onSubmit: save?.onSave,
-    // })
+	// const {submit, reset, form, fields, error, populate} = useEntityForm({
+	//     columns,
+	//     name: 'Form',
+	//     onSubmit: save?.onSave,
+	// })
     
-    // const { showModal,
-    //         open,
-    //         okText,
-    //         okHandler,
-    //         confirmLoading,
-    //         cancelHandler,
-    //         bodyStyle 
-    //     } = useModal({
-    //     title: save?.createLabel || 'Create',
-    //     okText: 'Save',
-    //     onOk: async () => {
-    //         await submit()
-    //         messageApi.open({
-    //             type: 'success',
-    //             content: 'The record has saved successfully',
-    //         })
-    //     },
-    //     onCancel: reset
-    // })
+	const { showModal,
+		open,
+		okText,
+		okHandler,
+		confirmLoading,
+		cancelHandler,
+		bodyStyle 
+	} = useModal({
+		title: save?.createLabel || 'Create',
+		okText: 'Save',
+		onOk: async () => {
+			// await submit()
+			messageApi.open({
+				type: 'success',
+				content: 'The record has saved successfully',
+			})
+		},
+		// onCancel: reset
+	})
 
-    const showFormModal = (data?: T, id?: string) => {
-        // showModal()
-        // reset()
+	const showFormModal = (data?: T, id?: string) => {
+		showModal()
+		// reset()
         
-        // if(data) {
-        //     populate(data, id)
-        // }
-    }
+		// if(data) {
+		//     populate(data, id)
+		// }
+	}
 
-    // const columns = useColumns({schema, onEdit: showFormModal})
+	// const columns = useColumns({schema, onEdit: showFormModal})
     
-    return (
-        <>
-            {contextHolder}
-            
-            <Layout>
-                <Header style={headerStyle}>
-                    <Row justify='space-between' >
-                        <div></div>
-                        {save && <Col span={4}>
-                            <Button type='primary' style={buttonStyle} onClick={() => showFormModal()}>{save?.createLabel || 'Create'}</Button>
-                        </Col>}
-                    </Row>
-                </Header>
-                <Content>
-                    <Table<T> dataSource={dataSource} columns={columns as TableColumnsType<T>} pagination={false} loading={isLoading} />
-                </Content>
-            </Layout>
-            {/* <Modal
-                title={title}
-                open={open}
-                okText={okText}
-                onOk={okHandler}
-                confirmLoading={confirmLoading}
-                onCancel={cancelHandler}
-                bodyStyle={bodyStyle}
-            >
-                <Form<T> 
-                    form={form}
-                    validateTrigger='onSubmit' 
-                    layout='vertical'>
-                    {fields}
-                 </Form>
-                 {error && <Alert type='error' message='There are errors in the form. Please correct before saving.'/>}
-            </Modal>    */}
-        </>
-    )
+	return (
+		<>
+			{contextHolder}
+			<Title>{title}</Title>
+			<Layout>
+				<Header style={headerStyle}>
+					<Row justify='space-between' >
+						<div></div>
+						{save && <Col span={4}>
+							<Button type='primary' style={buttonStyle} onClick={() => showFormModal()}>{save?.createLabel || 'Create'}</Button>
+						</Col>}
+					</Row>
+				</Header>
+				<Content>
+					<Table<T> dataSource={dataSource} columns={columns as TableColumnsType<T>} pagination={false} loading={isLoading} />
+				</Content>
+			</Layout>
+			<Modal
+				title={title}
+				open={open}
+				okText={okText}
+				onOk={okHandler}
+				confirmLoading={confirmLoading}
+				onCancel={cancelHandler}
+				bodyStyle={bodyStyle}>
+				{/* <Form<T> 
+					form={form}
+					validateTrigger='onSubmit' 
+					layout='vertical'>
+					{fields}
+				</Form>
+				{error && <Alert type='error' message='There are errors in the form. Please correct before saving.'/>} */}
+			</Modal> 
+		</>
+	)
 }
 
 export default DataTable
