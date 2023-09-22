@@ -11,9 +11,9 @@ router.get<Array<Car>, Array<Car>>('/', (req, res) => {
       id: 'AUD',
       name: 'Audi'
     },
-    color: {
+    colour: {
       id: 'RED',
-      name: 'RED'
+      name: 'Red'
     },
     name: 'Test'
   }])

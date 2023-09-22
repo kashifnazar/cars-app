@@ -1,6 +1,8 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cars from './routers/cars'
+import cors from 'cors'
+
 
 dotenv.config();
 
@@ -12,6 +14,10 @@ app.get('/', (req: Request, res: Response) => {
     health: 'ok'
   });
 });
+
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
 app.use('/api/cars', cars)
 
