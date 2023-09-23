@@ -1,7 +1,6 @@
 import express from 'express'
-import { getCars, saveCar } from '../services/cars'
-import { Car, User } from '@prisma/client'
-import { register } from '../services/auth'
+import { User } from '@prisma/client'
+import { generateAccessToken, login, register } from '../services/auth'
 const router = express.Router()
 
 router.post<'post', string, User>('/register', async (req, res) => {
@@ -10,10 +9,20 @@ router.post<'post', string, User>('/register', async (req, res) => {
     res.send('You are registered')
 })
 
-router.post<'post', Car, User>('/login', async (req, res) => {
+router.post<'post', any, User>('/login', async (req, res) => {
 
     const user = req.body
-    // await login(user)
+
+    try {
+        const authenticated = await login(user)
+
+        if(!authenticated) throw new Error()
+
+        res.json(generateAccessToken(user.username))
+
+    } catch(e) {        
+        res.status(401).send()
+    }
     
 })
 

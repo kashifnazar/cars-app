@@ -7,13 +7,8 @@ export function authenticateToken(req: any, res: any, next: any) {
   
     if (!token) return res.sendStatus(401)
   
-    jwt.verify(token, process.env.TOKEN_SECRET as string, (err: any, user: any) => {
-      console.log(err)
-  
+    jwt.verify(token, process.env.JWT_ACCESS_SECRET as string, (err: any, user: any) => {
       if (err) return res.sendStatus(403)
-  
-      req.user = user
-  
       next()
     })
   }

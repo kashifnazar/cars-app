@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
-import { Car, PrismaClient, User } from '@prisma/client'
+import jwt from 'jsonwebtoken'
+import { PrismaClient, User } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -21,4 +22,25 @@ export async function register(user: User) {
     })
 
     return { username }
+}
+
+export async function login(user: User) {
+    const { username, password  } = user 
+
+    const dbUser = await prisma.user.findUnique({
+        where: {
+            username
+        }
+    })
+
+    if(!dbUser) {
+        throw new Error('Not authenticated')
+    }
+
+    return await bcrypt.compare(password, dbUser.password)
+}
+
+export function generateAccessToken(username: string) {
+    //@ts-ignore
+    return jwt.sign({username}, process.env.JWT_ACCESS_SECRET, { expiresIn: '1800s' });
 }
