@@ -1,26 +1,16 @@
 import express from 'express'
-import { Car } from '../types/cars'
+import { getCars, saveCar } from '../services/cars'
+import { Car } from '@prisma/client'
 const router = express.Router()
 
-// define the home page route
-router.get<Array<Car>, Array<Car>>('/', (req, res) => {
-  res.send([{
-    id: '1',
-    code: '123',
-    make: {
-      id: 'AUD',
-      name: 'Audi'
-    },
-    colour: {
-      id: 'RED',
-      name: 'Red'
-    },
-    name: 'Test'
-  }])
+router.get('/', async (req, res) => {
+    res.send(await getCars())
 })
-// define the about route
-router.post('/', (req, res) => {
-  res.send('About birds')
+
+router.post<'post', Car, Car>('/', async (req, res) => {
+    const car = req.body
+    const newCar = await saveCar(car as Car)
+    res.send(newCar)
 })
 
 export default router
