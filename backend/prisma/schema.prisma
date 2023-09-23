@@ -7,6 +7,12 @@ generator client {
     provider = "prisma-client-js"
 }
 
+model User {
+    id       String @id @unique @default(uuid())
+    username String @unique
+    password String
+}
+
 model Car {
     id   Int    @id @default(autoincrement())
     name String
