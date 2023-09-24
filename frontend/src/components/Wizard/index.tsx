@@ -40,7 +40,9 @@ function Wizard({ steps, summary, onSave, onDone, minHeight }: Props){
 				})}
 				{summary}
 			</div>
-			<Button onClick={onOk}>{buttonText}</Button>
+			<div className='content-right'>
+				<Button type='primary' onClick={onOk}>{buttonText}</Button>
+			</div>
 		</>
 	)
 }

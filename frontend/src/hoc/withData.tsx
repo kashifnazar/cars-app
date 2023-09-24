@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 import DataTable, { SaveConfig } from '../components/DataTable'
 import useGet from '../hooks/useGet'
 import { useMemo  } from 'react'
@@ -8,6 +7,7 @@ import { Step } from '../components/Wizard'
 import useSave from '../hooks/useSave'
 
 type WithDataProps<T, V> = {
+	title?: string
     endpoint: string
     entityName: string
     columns: TableColumnsType<T>
@@ -16,7 +16,7 @@ type WithDataProps<T, V> = {
 	dialogHeight?: string //This doesn't belong here
 }
 
-function withData<T extends Record<PropertyKey, any>, FormValue>({ endpoint, entityName, columns, steps, renderSummary, dialogHeight}: WithDataProps<T, FormValue>){
+function withData<T extends Record<PropertyKey, any>, FormValue>({ title, endpoint, entityName, columns, steps, renderSummary, dialogHeight}: WithDataProps<T, FormValue>){
 
 	function Component() {
 
@@ -42,7 +42,8 @@ function withData<T extends Record<PropertyKey, any>, FormValue>({ endpoint, ent
 
 		if(error) return <div>There was an error</div>
 
-		return <DataTable<T, FormValue> title={entityName} 
+		return <DataTable<T, FormValue> 
+			title={title} 
 			dataSource={data || []} 
 			columns={columns} 
 			save={saveConfig} 

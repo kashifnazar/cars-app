@@ -17,6 +17,7 @@ function Cars() {
 	const getOptions = (entities?: Array<BaseObject>) => entities?.map(({id, name}) => ({label: name, value: id})) ?? []
 
 	const Component = withData<Car, CarFormValue>({
+		title: 'Cars',
 		endpoint: 'cars',
 		dialogHeight: '150px',
 		entityName: 'Car',

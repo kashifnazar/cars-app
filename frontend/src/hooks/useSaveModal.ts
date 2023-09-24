@@ -2,13 +2,19 @@ import { useForm } from 'antd/es/form/Form'
 import { useState } from 'react'
 import { SaveConfig } from '../components/DataTable'
 
+type ModalConfig = {
+	title: string
+}
+
 export default function useSaveModal<V>(save: SaveConfig<V>) {
 
 	const [form] = useForm<V>()
 	const [open, setOpen] = useState(false)
+	const [title, setTitle] = useState('')
 	const [summary, setSummary] = useState<JSX.Element>()
 
-	function showModal() {
+	function showModal({title}: ModalConfig) {
+		setTitle(title)
 		form.resetFields()
 		setOpen(true)
 	}
@@ -36,7 +42,8 @@ export default function useSaveModal<V>(save: SaveConfig<V>) {
 		onSave,
 		onDone,
 		showModal,
-		hideModal
+		hideModal,
+		modalTitle: title
 	}
 
 

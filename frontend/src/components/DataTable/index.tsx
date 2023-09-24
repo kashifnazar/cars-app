@@ -1,20 +1,11 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React from 'react'
-import { Button, Col, Layout, Row, Table, Input, message, Form, Alert, TableColumnsType, InputNumber, Select } from 'antd'
-import { Content, Header } from 'antd/es/layout/layout'
 import Modal from 'antd/es/modal/Modal'
-import Title from 'antd/es/typography/Title'
 import Wizard, { Step } from '../Wizard'
+import Title from 'antd/es/typography/Title'
+import { Content } from 'antd/es/layout/layout'
 import useSaveModal from '../../hooks/useSaveModal'
-
-const headerStyle: React.CSSProperties = {
-	textAlign: 'center',
-	color: '#fff',
-	height: 64,
-	paddingInline: 50,
-	lineHeight: '64px',
-	backgroundColor: '#eee',
-}
+import { Button, Table, message, Form, TableColumnsType } from 'antd'
 
 export type SearchConfig = {
     placeholder?: string
@@ -41,28 +32,26 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 
 	const [messageApi, contextHolder] = message.useMessage()
 
-	const { form, open, summary, showModal, hideModal, onSave, onDone } = useSaveModal<V>(save)
+	const { form, open, summary, showModal, hideModal, onSave, onDone, modalTitle } = useSaveModal<V>(save)
 
+	const newTitle = save?.createLabel || 'New'
     
 	return (
 		<>
 			{contextHolder}
 			<Title>{title}</Title>
-			<Layout>
-				<Header style={headerStyle}>
-					<Row justify='space-between' >
-						<div></div>
-						{save && <Col span={4}>
-							<Button type='primary' onClick={() => showModal()}>{save?.createLabel || 'Create'}</Button>
-						</Col>}
-					</Row>
-				</Header>
-				<Content>
-					<Table<T> dataSource={dataSource} columns={columns as TableColumnsType<T>} pagination={false} loading={isLoading} />
-				</Content>
-			</Layout>
+
+			<div className='action-bar'>{save && 
+					<Button type='primary' onClick={() => showModal({title: newTitle})}>{newTitle}</Button>
+			}</div>
+
+			
+			<Content>
+				<Table<T> className="table-striped-rows" dataSource={dataSource} columns={columns as TableColumnsType<T>} pagination={false} loading={isLoading} />
+			</Content>
+			
 			{save && <Modal
-				title={title}
+				title={modalTitle}
 				open={open}
 				footer={null}
 				onCancel={hideModal}

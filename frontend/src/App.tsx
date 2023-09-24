@@ -1,7 +1,8 @@
-import { QueryClient, QueryClientProvider } from 'react-query'
-import Cars from './containers/Cars'
-import { ConfigProvider } from 'antd'
 import React from 'react'
+import AppRoutes from './routes'
+import { ConfigProvider } from 'antd'
+import { BrowserRouter } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 function App() {
 
@@ -24,7 +25,11 @@ function App() {
 					},
 				}}
 			>
-				<Cars />
+				<BrowserRouter>
+					<div className='app-container'>
+						<AppRoutes />
+					</div>
+				</BrowserRouter>
 			</ConfigProvider>
 		</QueryClientProvider>
 	)
