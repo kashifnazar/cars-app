@@ -29,7 +29,7 @@ const api = express.Router()
 app.use('/', auth)
 
 app.use('/api', api)
-// api.use(authenticateToken)
+api.use(authenticateToken)
 
 api.use('/cars', cars)
 api.use('/makes', makes)

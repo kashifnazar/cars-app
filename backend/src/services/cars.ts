@@ -19,8 +19,17 @@ export async function getCars() {
     })
 }
 
-export async function saveCar({id, ...car}: Car) {
-    return await prisma.car.create({data: car})
+export async function createCar(car: Car) {
+    return await prisma.car.create({
+        data: car
+    })
+}
+
+export async function updateCar(id: number, car: Car) {
+    return await prisma.car.update({
+        data: car, 
+        where: { id }
+    })
 }
 
 export async function deleteCar(id: number) {
