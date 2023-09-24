@@ -7,6 +7,7 @@ import useGet from '../hooks/useGet'
 import Make from '../types/make'
 import Colour from '../types/colour'
 import BaseObject from '../types/base-object'
+import { CarFormValue as CarFormValue } from '../types/car-form-value'
 
 function Cars() {
 
@@ -15,10 +16,15 @@ function Cars() {
 
 	const getOptions = (entities?: Array<BaseObject>) => entities?.map(({id, name}) => ({label: name, value: id})) ?? []
 
-	const Component = withData<Car, Car>({
+	const Component = withData<Car, CarFormValue>({
 		endpoint: 'cars',
+		dialogHeight: '150px',
 		entityName: 'Car',
-		renderSummary: ({ colour, code, make}: Car) => <CarSummary car={{ colour, code, make}}/>,
+		renderSummary: ({ colourId, code, makeId}: CarFormValue) => {
+			const colour = colours?.find(c => c.id === colourId)
+			const make = makes?.find(m => m.id === makeId)
+			return <CarSummary car={{ colour, code, make}}/>
+		},
 		columns: [{
 			key: 'name',
 			title: 'Name',

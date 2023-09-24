@@ -21,21 +21,25 @@ export type Step = {
 }
 
 export type Props = {
+    minHeight?: string
     steps: Step[]
-    summary: JSX.Element
+    summary?: JSX.Element
     onSave: () => void
+    onDone?: () => void
 }
 
-function Wizard({ steps, summary, onSave }: Props){
+function Wizard({ steps, summary, onSave, onDone, minHeight }: Props){
 
-	const { onOk, buttonText, current, isSummary } = useWizard({ steps, onSave, summary })
+	const { onOk, buttonText, current } = useWizard({ steps, onSave, summary, onDone })
 
 	return (
 		<>
-			{steps.map(function getStep({key, ...step}, i){
-				return <WizardStep key={key ?? 'step' + i} hide={current != i} {...step} />
-			})}
-			{isSummary && summary}
+			<div style={{minHeight}}>
+				{steps.map(function getStep({key, ...step}, i){
+					return <WizardStep key={key ?? 'step' + i} hide={current != i} {...step} />
+				})}
+				{summary}
+			</div>
 			<Button onClick={onOk}>{buttonText}</Button>
 		</>
 	)

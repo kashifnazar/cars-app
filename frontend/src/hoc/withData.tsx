@@ -16,26 +16,28 @@ type WithDataProps<T, V> = {
     columns: TableColumnsType<T>
 	steps: Array<Step> //TODO: Remove this out
 	renderSummary: (values: V) => JSX.Element
+	dialogHeight?: string //This doesn't belong here
 }
 
-function withData<T extends Record<PropertyKey, any>, V>({ endpoint, entityName, columns, steps, renderSummary}: WithDataProps<T, V>){
+function withData<T extends Record<PropertyKey, any>, FormValue>({ endpoint, entityName, columns, steps, renderSummary, dialogHeight}: WithDataProps<T, FormValue>){
 
 	function Component() {
 
 		const { data, isLoading, refetch, error } = useGet<T>({ endpoint })
-		const { save } = useSave<V>({
+		const { save } = useSave<FormValue>({
 			endpoint,
 			onSuccess: refetch
 		})
 
 		// Construct save config to be passed to the DataTable
-		const saveConfig = useMemo<SaveConfig<V>>(() => {
+		const saveConfig = useMemo<SaveConfig<FormValue>>(() => {
 			return {
 				createLabel: 'New ' + entityName,
-				async onSave(value: V) {
-					save({...value} as V)
+				async onSave(value: FormValue) {
+					save({...value} as FormValue)
 				},
 				renderSummary,
+				minHeight: dialogHeight,
 				steps
 			}
 		}, [])
@@ -43,11 +45,12 @@ function withData<T extends Record<PropertyKey, any>, V>({ endpoint, entityName,
 
 		if(error) return <div>There was an error</div>
 
-		return <DataTable<T, V> title={entityName} 
+		return <DataTable<T, FormValue> title={entityName} 
 			dataSource={data || []} 
 			columns={columns} 
 			save={saveConfig} 
-			isLoading={isLoading}/>
+			isLoading={isLoading}
+		/>
 	}
 
 	return Component

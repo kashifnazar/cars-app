@@ -16,17 +16,14 @@ const headerStyle: React.CSSProperties = {
 	backgroundColor: '#eee',
 }
 
-const buttonStyle: React.CSSProperties = {
-	borderRadius: 0
-}
-
 export type SearchConfig = {
     placeholder?: string
     onSearch: (value: string) => void
 }
 
 export type SaveConfig<V> = {
-    createLabel?: string,
+    createLabel?: string
+	minHeight?: string
     steps: Array<Step>
     renderSummary: (values: V) => JSX.Element
     onSave: (value: V) => Promise<void>
@@ -44,13 +41,8 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 
 	const [messageApi, contextHolder] = message.useMessage()
 
-	const {form, open, showModal, hideModal} = useSaveModal<V>(save)
+	const { form, open, summary, showModal, hideModal, onSave, onDone } = useSaveModal<V>(save)
 
-	async function onSave() {
-		const values = await form.validateFields()
-		await save.onSave(values)
-		hideModal()
-	}
     
 	return (
 		<>
@@ -61,7 +53,7 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 					<Row justify='space-between' >
 						<div></div>
 						{save && <Col span={4}>
-							<Button type='primary' style={buttonStyle} onClick={() => showModal()}>{save?.createLabel || 'Create'}</Button>
+							<Button type='primary' onClick={() => showModal()}>{save?.createLabel || 'Create'}</Button>
 						</Col>}
 					</Row>
 				</Header>
@@ -74,9 +66,10 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 				open={open}
 				footer={null}
 				onCancel={hideModal}
+				bodyStyle={{marginTop: '2rem'}}
 			>
 				<Form form={form}>
-					<Wizard steps={save?.steps || []} onSave={onSave} summary={<div></div>} />
+					<Wizard steps={save?.steps || []} onSave={onSave} onDone={onDone} summary={summary} minHeight={save.minHeight} />
 				</Form>
 			</Modal> }
 		</>

@@ -1,6 +1,10 @@
 import React from 'react'
 import { Car } from '../../types/cars'
 
+import { Typography } from 'antd'
+
+const { Text } = Typography
+
 type Props = {
 	car: Partial<Car>
 }
@@ -8,12 +12,11 @@ type Props = {
 function CarSummary({car: {make, colour, code}}: Props) {
 	return (
 		<div>
-			{/* <>I have a {make} and the colour is {colour}</>
+			<Text>I have a {make?.name} and the colour is {colour?.name}</Text>
 
-			{colour.id === 'red' && <br/>THIS CAR IS RED! NICE!! }
+			{colour?.id === 1 && <Text strong>THIS CAR IS RED! NICE!!</Text> }
 
-			<br/>REF: {code} */}
-
+			<Text>REF: {code}</Text>
 		</div>
 	)
 }

@@ -4,8 +4,9 @@ import { SaveConfig } from '../components/DataTable'
 
 export default function useSaveModal<V>(save: SaveConfig<V>) {
 
+	const [form] = useForm<V>()
 	const [open, setOpen] = useState(false)
-	const [form] = useForm<V>() 
+	const [summary, setSummary] = useState<JSX.Element>()
 
 	function showModal() {
 		form.resetFields()
@@ -16,14 +17,26 @@ export default function useSaveModal<V>(save: SaveConfig<V>) {
 		setOpen(false)
 	}
 
-	const summary = save.renderSummary(form.getFieldsValue())
+	async function onDone() {
+		const values = await form.validateFields()
+		const summary = save.renderSummary(values)
+		setSummary(summary)
+	}
+
+	async function onSave() {
+		const values = await form.validateFields()
+		await save.onSave(values)
+		hideModal()
+	}
 
 	return {
 		open,
 		form,
+		summary,
+		onSave,
+		onDone,
 		showModal,
-		hideModal,
-		summary
+		hideModal
 	}
 
 
