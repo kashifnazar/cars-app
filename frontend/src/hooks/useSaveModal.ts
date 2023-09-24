@@ -15,7 +15,6 @@ export default function useSaveModal<V>(save: SaveConfig<V>) {
 
 	function showModal({ title }: ModalConfig) {
 		setTitle(title)
-		form.resetFields()
 		setOpen(true)
 	}
 

@@ -5,8 +5,8 @@ import Wizard, { Step } from '../Wizard'
 import Title from 'antd/es/typography/Title'
 import { Content } from 'antd/es/layout/layout'
 import useSaveModal from '../../hooks/useSaveModal'
-import { Button, Table, message, Form, TableColumnsType, Space, Popconfirm } from 'antd'
 import { DeleteOutlined, EditFilled } from '@ant-design/icons'
+import { Button, Table, message, Form, TableColumnsType, Space, Popconfirm } from 'antd'
 
 export type SearchConfig = {
     placeholder?: string
@@ -42,12 +42,19 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 		await onDelete?.(id)
 		messageApi.success('The record has deleted successfully')
 	}
+
+	function showEditModal(values: V) {
+		form.setFieldsValue(values as any)
+		showModal({
+			title: 'Edit'
+		})
+	}
     
 	const columnsWithActions: TableColumnsType<T> = [...columns, {
 		align: 'right',
 		dataIndex: 'id',
 		key: 'id',
-		render(id: number) {
+		render(id: number, values: T) {
 			return <Space>
 				<Popconfirm
 					title='Delete'
@@ -58,7 +65,13 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 					cancelText="No">
 					<Button danger size='small' shape='round' icon={<DeleteOutlined />} />
 				</Popconfirm>
-				<Button type='primary' size='small' shape='round' icon={<EditFilled />} />
+				<Button 
+					type='primary' 
+					size='small' 
+					shape='round' 
+					icon={<EditFilled />}
+					onClick={() => showEditModal(values)}	
+				/>
 				
 			</Space>
 		}
@@ -69,7 +82,8 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 			{contextHolder}
 			<Title>{title}</Title>
 
-			<div className='action-bar'>{save && 
+			<div className='action-bar'>{
+				save && 
 				<Button type='primary' size='large' onClick={() => showModal({title: newTitle})}>{newTitle}</Button>
 			}</div>
 
@@ -83,8 +97,7 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 				open={open}
 				footer={null}
 				onCancel={hideModal}
-				bodyStyle={{marginTop: '2rem'}}
-			>
+				bodyStyle={{marginTop: '2rem'}}>
 				<Form form={form}>
 					<Wizard steps={save?.steps || []} onSave={onSave} onDone={onDone} summary={summary} minHeight={save.minHeight} />
 				</Form>
