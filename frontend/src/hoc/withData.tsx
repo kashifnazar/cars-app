@@ -2,10 +2,9 @@ import React from 'react'
 import DataTable, { SaveConfig } from '../components/DataTable'
 import useGet from '../hooks/useGet'
 import { useMemo  } from 'react'
-import { Button, Space, TableColumnsType } from 'antd'
+import { TableColumnsType } from 'antd'
 import { Step } from '../components/Wizard'
 import useSave from '../hooks/usePost'
-import { DeleteOutlined, EditFilled } from '@ant-design/icons'
 import useDelete from '../hooks/useDelete'
 
 type WithDataProps<T, V> = {
@@ -34,7 +33,7 @@ function withData<T extends Record<PropertyKey, any>, FormValue>({ title, endpoi
 			return {
 				createLabel: 'New ' + entityName,
 				async onSave(value: FormValue) {
-					save({...value} as FormValue)
+					save(value as FormValue)
 				},
 				renderSummary,
 				minHeight: dialogHeight,
