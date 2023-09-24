@@ -1,4 +1,4 @@
 export default interface BaseObject {
-    id: string
+    id: number
     name: string
 }

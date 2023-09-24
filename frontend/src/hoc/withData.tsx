@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import DataTable, { SaveConfig } from '../components/DataTable'
 import { useMutation, useQuery } from 'react-query'
+import useGet from '../hooks/useGet'
 import { useMemo  } from 'react'
 import { TableColumnsType } from 'antd'
 import { Step } from '../components/Wizard'
+import useSave from '../hooks/useSave'
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL
 
@@ -20,38 +22,10 @@ function withData<T extends Record<PropertyKey, any>, V>({ endpoint, entityName,
 
 	function Component() {
 
-		const { data, isLoading, refetch, error } = useQuery<Array<T>>({
-			queryKey: endpoint,
-			queryFn: async () => {
-
-				const url =  endpoint
-
-				const { data } = await axios.get(url)
-				return data
-			}
-		})
-
-		const { mutate } = useMutation<T, unknown, V>({
-
-			mutationFn: async (variables: V) => {
-                
-				//If the entity contains an id, send a PUT request to :/id with the endpoint. Otherwise send a POST request to the endpoint
-				// const url = variables.id ? [endpoint, variables.id].join('/') : endpoint
-
-				// let response 
-
-				// if(variables.id) 
-				// 	response = await axios.put(url, variables)
-				// else 
-				const response = await axios.post(endpoint, variables)
-
-				const {data} = response
-
-				return data
-			},
-			onSuccess(data, variables, context) {
-				refetch()
-			},
+		const { data, isLoading, refetch, error } = useGet<T>({ endpoint })
+		const { save } = useSave<V>({
+			endpoint,
+			onSuccess: refetch
 		})
 
 		// Construct save config to be passed to the DataTable
@@ -59,12 +33,12 @@ function withData<T extends Record<PropertyKey, any>, V>({ endpoint, entityName,
 			return {
 				createLabel: 'New ' + entityName,
 				async onSave(value: V) {
-					mutate({...value} as V)
+					save({...value} as V)
 				},
 				renderSummary,
 				steps
 			}
-		}, [mutate])
+		}, [])
 
 
 		if(error) return <div>There was an error</div>

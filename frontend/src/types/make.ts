@@ -1,5 +1,5 @@
-import BaseObject from "./base-object";
+import BaseObject from './base-object'
 
-export default interface Make extends BaseObject {
-    
-}
+type Make = BaseObject
+
+export default Make

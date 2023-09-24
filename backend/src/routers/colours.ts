@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-    res.send(await prisma.make.findMany())
+    res.send(await prisma.colour.findMany())
 })
 
 export default router

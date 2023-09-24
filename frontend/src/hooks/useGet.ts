@@ -1,0 +1,22 @@
+import axios from 'axios'
+import { useQuery } from 'react-query'
+
+type Props = {
+    endpoint: string
+}
+
+function useGet<T>({ endpoint }: Props) {
+	const { data, isLoading, refetch, error } = useQuery<Array<T>>({
+		queryKey: endpoint,
+		queryFn: async () => {
+
+			const url =  endpoint
+			const { data } = await axios.get(url)
+			return data
+		}
+	})
+
+	return {data, isLoading, refetch, error}
+}
+
+export default useGet

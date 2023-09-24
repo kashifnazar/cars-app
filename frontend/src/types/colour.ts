@@ -1,5 +1,5 @@
-import BaseObject from "./base-object";
+import BaseObject from './base-object'
 
-export default interface Color extends BaseObject {
-    
-}
+type Colour = BaseObject
+
+export default Colour 

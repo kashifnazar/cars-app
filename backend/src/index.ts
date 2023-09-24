@@ -1,7 +1,7 @@
 import cors from 'cors'
 import dotenv from 'dotenv';
 import cars from './routers/cars'
-import make from './routers/make'
+import makes from './routers/makes'
 import auth from './routers/auth'
 import colours from './routers/colours'
 import express, { Express, Request, Response } from 'express';
@@ -29,10 +29,10 @@ const api = express.Router()
 app.use('/', auth)
 
 app.use('/api', api)
-api.use(authenticateToken)
+// api.use(authenticateToken)
 
 api.use('/cars', cars)
-api.use('/make', make)
+api.use('/makes', makes)
 api.use('/colours', colours)
 
 app.listen(port, () => {

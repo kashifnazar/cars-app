@@ -12,6 +12,7 @@ function useWizard({ steps, onSave }: UseWizardProps) {
 	async function onOk() {
 		if(current === steps.length) {
 			onSave()
+			setCurrent(0)
 		} else {
 			onNext()
 		}
