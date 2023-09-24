@@ -5,7 +5,8 @@ import Wizard, { Step } from '../Wizard'
 import Title from 'antd/es/typography/Title'
 import { Content } from 'antd/es/layout/layout'
 import useSaveModal from '../../hooks/useSaveModal'
-import { Button, Table, message, Form, TableColumnsType } from 'antd'
+import { Button, Table, message, Form, TableColumnsType, Space, Popconfirm } from 'antd'
+import { DeleteOutlined, EditFilled } from '@ant-design/icons'
 
 export type SearchConfig = {
     placeholder?: string
@@ -26,28 +27,55 @@ type Props<T extends Record<PropertyKey, any>, V> = {
     save: SaveConfig<V>
     title?: string
     isLoading?: boolean
+	onDelete?: (id: number) => Promise<void>
 }
 
-function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, dataSource, save, isLoading }: Props<T, V>) {
+function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, dataSource, save, isLoading, onDelete }: Props<T, V>) {
 
 	const [messageApi, contextHolder] = message.useMessage()
 
 	const { form, open, summary, showModal, hideModal, onSave, onDone, modalTitle } = useSaveModal<V>(save)
 
 	const newTitle = save?.createLabel || 'New'
+
+	async function onConfirmDelete(id: number) {
+		await onDelete?.(id)
+		messageApi.success('The record has deleted successfully')
+	}
     
+	const columnsWithActions: TableColumnsType<T> = [...columns, {
+		align: 'right',
+		dataIndex: 'id',
+		key: 'id',
+		render(id: number) {
+			return <Space>
+				<Popconfirm
+					title='Delete'
+					description = 'Are you sure and you want to delete this record?'
+					onConfirm={() => onConfirmDelete?.(id)}
+					okType='danger'
+					okText="Yes"
+					cancelText="No">
+					<Button danger size='small' shape='round' icon={<DeleteOutlined />} />
+				</Popconfirm>
+				<Button type='primary' size='small' shape='round' icon={<EditFilled />} />
+				
+			</Space>
+		}
+	}]
+
 	return (
 		<>
 			{contextHolder}
 			<Title>{title}</Title>
 
 			<div className='action-bar'>{save && 
-					<Button type='primary' onClick={() => showModal({title: newTitle})}>{newTitle}</Button>
+				<Button type='primary' size='large' onClick={() => showModal({title: newTitle})}>{newTitle}</Button>
 			}</div>
 
 			
 			<Content>
-				<Table<T> className="table-striped-rows" dataSource={dataSource} columns={columns as TableColumnsType<T>} pagination={false} loading={isLoading} />
+				<Table<T> className="table-striped-rows" dataSource={dataSource} columns={columnsWithActions as TableColumnsType<T>} pagination={false} loading={isLoading} />
 			</Content>
 			
 			{save && <Modal
@@ -60,7 +88,7 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 				<Form form={form}>
 					<Wizard steps={save?.steps || []} onSave={onSave} onDone={onDone} summary={summary} minHeight={save.minHeight} />
 				</Form>
-			</Modal> }
+			</Modal>}
 		</>
 	)
 }

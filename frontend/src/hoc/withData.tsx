@@ -2,9 +2,11 @@ import React from 'react'
 import DataTable, { SaveConfig } from '../components/DataTable'
 import useGet from '../hooks/useGet'
 import { useMemo  } from 'react'
-import { TableColumnsType } from 'antd'
+import { Button, Space, TableColumnsType } from 'antd'
 import { Step } from '../components/Wizard'
 import useSave from '../hooks/usePost'
+import { DeleteOutlined, EditFilled } from '@ant-design/icons'
+import useDelete from '../hooks/useDelete'
 
 type WithDataProps<T, V> = {
 	title?: string
@@ -16,11 +18,12 @@ type WithDataProps<T, V> = {
 	dialogHeight?: string //This doesn't belong here
 }
 
-function withData<T extends Record<PropertyKey, any>, FormValue>({ title, endpoint, entityName, columns, steps, renderSummary, dialogHeight}: WithDataProps<T, FormValue>){
+function withData<T extends Record<PropertyKey, any>, FormValue>({ title, endpoint, entityName, columns, steps, renderSummary, dialogHeight }: WithDataProps<T, FormValue>){
 
 	function Component() {
 
 		const { data, isLoading, refetch, error } = useGet<T>({ endpoint })
+		
 		const { save } = useSave<FormValue>({
 			endpoint,
 			onSuccess: refetch
@@ -39,15 +42,24 @@ function withData<T extends Record<PropertyKey, any>, FormValue>({ title, endpoi
 			}
 		}, [])
 
+		const { remove } = useDelete({
+			endpoint,
+		})
+
+		async function onDelete(id: number) {
+			await remove(id)
+			refetch()
+		}
 
 		if(error) return <div>There was an error</div>
 
 		return <DataTable<T, FormValue> 
 			title={title} 
-			dataSource={data || []} 
-			columns={columns} 
+			columns={columns}
 			save={saveConfig} 
+			onDelete={onDelete}
 			isLoading={isLoading}
+			dataSource={data || []} 
 		/>
 	}
 

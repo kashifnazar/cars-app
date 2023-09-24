@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Select } from 'antd'
+import { Input, Select, Tag } from 'antd'
 import withData from '../hoc/withData'
 import { Car } from '../types/cars'
 import CarSummary from '../components/CarSummary'
@@ -44,7 +44,9 @@ function Cars() {
 			title: 'Colour',
 			dataIndex: 'colour',
 			render: function(_1, { colour }) {
-				return colour.name
+				return <Tag style={{minWidth: '3rem', textAlign: 'center'}} color={colour.name}>
+					{colour.name}
+				</Tag>
 			}
 		},
 		{

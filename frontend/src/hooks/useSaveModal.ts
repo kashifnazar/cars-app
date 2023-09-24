@@ -9,11 +9,11 @@ type ModalConfig = {
 export default function useSaveModal<V>(save: SaveConfig<V>) {
 
 	const [form] = useForm<V>()
-	const [open, setOpen] = useState(false)
 	const [title, setTitle] = useState('')
+	const [open, setOpen] = useState(false)
 	const [summary, setSummary] = useState<JSX.Element>()
 
-	function showModal({title}: ModalConfig) {
+	function showModal({ title }: ModalConfig) {
 		setTitle(title)
 		form.resetFields()
 		setOpen(true)
@@ -21,6 +21,7 @@ export default function useSaveModal<V>(save: SaveConfig<V>) {
 
 	function hideModal() {
 		setOpen(false)
+		form.resetFields()
 	}
 
 	async function onDone() {

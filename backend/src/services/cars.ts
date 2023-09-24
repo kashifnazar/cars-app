@@ -22,3 +22,11 @@ export async function getCars() {
 export async function saveCar({id, ...car}: Car) {
     return await prisma.car.create({data: car})
 }
+
+export async function deleteCar(id: number) {
+    return await prisma.car.delete({
+        where: {
+            id
+        }
+    })
+}
