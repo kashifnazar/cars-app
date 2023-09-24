@@ -9,6 +9,7 @@ COPY tsconfig.json ./
 COPY . .
 
 RUN npm install
+RUN npm build
 RUN npx prisma generate
 
 EXPOSE 3000
