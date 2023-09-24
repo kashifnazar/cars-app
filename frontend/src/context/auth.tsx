@@ -1,6 +1,7 @@
-import React, { PropsWithChildren, createContext, useContext, useMemo } from 'react'
+import React, { PropsWithChildren, createContext, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useLocalStorage from '../hooks/useLocalStorage'
+import client from '../helpers/axios'
 
 const AuthContext = createContext({
 	token: '',
@@ -17,7 +18,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 	// call this function when you want to authenticate the user
 	function login(token: string){
 		setToken(token)
-		navigate('/')
+		client.defaults.headers['Authorization'] = 'Bearer ' + token
+		navigate('/cars')
 	}
 
 	const value = {
