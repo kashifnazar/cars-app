@@ -1,4 +1,4 @@
-import axios from 'axios'
+import client from '../helpers/axios'
 import { useMutation } from 'react-query'
 
 
@@ -21,7 +21,7 @@ function useSave<V>({ endpoint, onSuccess }: Props) {
 			// if(variables.id) 
 			// 	response = await axios.put(url, variables)
 			// else 
-			const response = await axios.post(endpoint, variables)
+			const response = await client.post(endpoint, variables)
     
 			const {data} = response
     

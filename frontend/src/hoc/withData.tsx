@@ -1,14 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import axios from 'axios'
 import DataTable, { SaveConfig } from '../components/DataTable'
-import { useMutation, useQuery } from 'react-query'
 import useGet from '../hooks/useGet'
 import { useMemo  } from 'react'
 import { TableColumnsType } from 'antd'
 import { Step } from '../components/Wizard'
 import useSave from '../hooks/useSave'
-
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL
 
 type WithDataProps<T, V> = {
     endpoint: string

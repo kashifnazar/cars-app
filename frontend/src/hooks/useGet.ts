@@ -1,4 +1,4 @@
-import axios from 'axios'
+import client from '../helpers/axios'
 import { useQuery } from 'react-query'
 
 type Props = {
@@ -11,7 +11,7 @@ function useGet<T>({ endpoint }: Props) {
 		queryFn: async () => {
 
 			const url =  endpoint
-			const { data } = await axios.get(url)
+			const { data } = await client.get(url)
 			return data
 		}
 	})
