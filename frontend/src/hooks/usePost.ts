@@ -9,7 +9,7 @@ type Props = {
 
 function useSave<V>({ endpoint, onSuccess }: Props) {
 
-	const { mutate } = useMutation<unknown, unknown, V>({
+	const { mutate: post } = useMutation<unknown, unknown, V>({
 
 		mutationFn: async (variables: V) => {
             
@@ -21,7 +21,7 @@ function useSave<V>({ endpoint, onSuccess }: Props) {
 			// if(variables.id) 
 			// 	response = await axios.put(url, variables)
 			// else 
-			const response = await client.post(endpoint, variables)
+			const response = await client.post('/api/' + endpoint, variables)
     
 			const {data} = response
     
@@ -32,7 +32,7 @@ function useSave<V>({ endpoint, onSuccess }: Props) {
 		},
 	})
 
-	return { save: mutate}
+	return { save: post}
 }
 
 export default useSave

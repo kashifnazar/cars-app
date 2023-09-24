@@ -3,6 +3,7 @@ import AppRoutes from './routes'
 import { ConfigProvider } from 'antd'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { AuthProvider } from './context/auth'
 
 function App() {
 
@@ -10,6 +11,7 @@ function App() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
+			
 			<ConfigProvider
 				theme={{
 					components: {
@@ -26,11 +28,14 @@ function App() {
 				}}
 			>
 				<BrowserRouter>
-					<div className='app-container'>
-						<AppRoutes />
-					</div>
+					<AuthProvider>
+						<div className='app-container'>
+							<AppRoutes />
+						</div>
+					</AuthProvider>
 				</BrowserRouter>
 			</ConfigProvider>
+			
 		</QueryClientProvider>
 	)
 }

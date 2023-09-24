@@ -1,15 +1,17 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@layer root {
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    code {
+      font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+    }
 }
 
 @layer layout {
@@ -25,12 +27,13 @@ code {
 }
 
 @layer table {
-  .table-striped-rows tr:nth-child(2n) td {
-    background-color: #fbfbfb;
-  }
-  .table-striped-rows thead {
-    background-color: #f1f1f1;
-  }
+    .table-striped-rows tr:nth-child(2n) td {
+      background-color: #fbfbfb;
+    }
+    
+    .table-striped-rows thead {
+      background-color: #f1f1f1;
+    }
 }
 
 @layer login {
@@ -63,6 +66,11 @@ code {
 }
 
 @layer common {
+
+  .mb-2 {
+    margin-bottom: 2rem;
+  }
+
   .content-right {
     display: flex;
     justify-content: end;

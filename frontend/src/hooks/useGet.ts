@@ -10,7 +10,7 @@ function useGet<T>({ endpoint }: Props) {
 		queryKey: endpoint,
 		queryFn: async () => {
 
-			const url =  endpoint
+			const url =  '/api/' + endpoint
 			const { data } = await client.get(url)
 			return data
 		}

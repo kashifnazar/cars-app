@@ -4,7 +4,7 @@ import useGet from '../hooks/useGet'
 import { useMemo  } from 'react'
 import { TableColumnsType } from 'antd'
 import { Step } from '../components/Wizard'
-import useSave from '../hooks/useSave'
+import useSave from '../hooks/usePost'
 
 type WithDataProps<T, V> = {
 	title?: string
