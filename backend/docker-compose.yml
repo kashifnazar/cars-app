@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  cars-app-api:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cars-app-api
+    ports:
+      - "3000:3000"
+    restart: always
