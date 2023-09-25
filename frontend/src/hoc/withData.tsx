@@ -2,7 +2,7 @@ import React from 'react'
 import DataTable, { SaveConfig } from '../components/DataTable'
 import useGet from '../hooks/useGet'
 import { useMemo  } from 'react'
-import { TableColumnsType } from 'antd'
+import { Result, TableColumnsType } from 'antd'
 import { Step } from '../components/Wizard'
 import useSave from '../hooks/usePost'
 import useDelete from '../hooks/useDelete'
@@ -51,7 +51,11 @@ function withData<T extends Record<PropertyKey, any>, FormValue>({ title, endpoi
 			refetch()
 		}
 
-		if(error) return <div>There was an error</div>
+		if(error) return <Result
+			status="500"
+			title="500"
+			subTitle="Sorry, there was an error. Please try again later or contact the administrator"
+		/>
 
 		return <DataTable<T, FormValue> 
 			title={title} 
