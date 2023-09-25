@@ -33,7 +33,7 @@ function withData<T extends Record<PropertyKey, any>, FormValue>({ title, endpoi
 			return {
 				createLabel: 'New ' + entityName,
 				async onSave(value: FormValue) {
-					save(value as FormValue)
+					save(value as FormValue & {id?: number})
 				},
 				renderSummary,
 				minHeight: dialogHeight,

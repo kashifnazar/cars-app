@@ -9,19 +9,19 @@ type Props = {
 
 function useSave<V>({ endpoint, onSuccess }: Props) {
 
-	const { mutate: post } = useMutation<unknown, unknown, V>({
+	const { mutate: post } = useMutation<unknown, unknown, V & {id?: number}>({
 
-		mutationFn: async (variables: V) => {
+		mutationFn: async (variables: V & {id?: number}) => {
             
 			//If the entity contains an id, send a PUT request to :/id with the endpoint. Otherwise send a POST request to the endpoint
-			// const url = variables.id ? [endpoint, variables.id].join('/') : endpoint
+			const url = variables.id ? ['/api', endpoint, variables.id].join('/') : endpoint
     
-			// let response 
+			let response 
     
-			// if(variables.id) 
-			// 	response = await axios.put(url, variables)
-			// else 
-			const response = await client.post('/api/' + endpoint, variables)
+			if(variables.id) 
+				response = await client.put(url, variables)
+			else 
+				response = await client.post('/api/' + endpoint, variables)
     
 			const {data} = response
     

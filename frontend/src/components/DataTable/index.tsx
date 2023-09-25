@@ -44,10 +44,10 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 	}
 
 	function showEditModal(values: V) {
-		form.setFieldsValue(values as any)
 		showModal({
 			title: 'Edit'
 		})
+		form.setFieldsValue(values as any)
 	}
     
 	const columnsWithActions: TableColumnsType<T> = [...columns, {
