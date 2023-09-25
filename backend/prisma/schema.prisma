@@ -15,8 +15,8 @@ model User {
 
 model Car {
     id   Int    @id @default(autoincrement())
-    name String
-    code String
+    name String @default("")
+    code String @default("")
 
     colour   Colour @relation(fields: [colourId], references: [id])
     colourId Int
