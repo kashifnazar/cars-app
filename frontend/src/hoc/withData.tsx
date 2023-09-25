@@ -14,10 +14,11 @@ type WithDataProps<T, V> = {
     columns: TableColumnsType<T>
 	steps: Array<Step> //TODO: Remove this out
 	renderSummary: (values: V) => JSX.Element
+	initialValues?: Partial<V>
 	dialogHeight?: string //This doesn't belong here
 }
 
-function withData<T extends Record<PropertyKey, any>, FormValue>({ title, endpoint, entityName, columns, steps, renderSummary, dialogHeight }: WithDataProps<T, FormValue>){
+function withData<T extends Record<PropertyKey, any>, FormValue>({ title, endpoint, entityName, columns, steps, renderSummary, dialogHeight, initialValues }: WithDataProps<T, FormValue>){
 
 	function Component() {
 
@@ -58,7 +59,8 @@ function withData<T extends Record<PropertyKey, any>, FormValue>({ title, endpoi
 			save={saveConfig} 
 			onDelete={onDelete}
 			isLoading={isLoading}
-			dataSource={data || []} 
+			dataSource={data || []}
+			initialValues={initialValues}
 		/>
 	}
 

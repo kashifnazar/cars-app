@@ -21,6 +21,10 @@ function Cars() {
 		endpoint: 'cars',
 		dialogHeight: '150px',
 		entityName: 'Car',
+		initialValues: {
+			colourId: 1,
+			makeId: 1
+		},
 		renderSummary: ({ colourId, code, makeId}: CarFormValue) => {
 			const colour = colours?.find(c => c.id === colourId)
 			const make = makes?.find(m => m.id === makeId)
@@ -73,7 +77,6 @@ function Cars() {
 							name: 'makeId',
 							component: Select,
 							props: {
-								defaultValue: 1,
 								options: getOptions(makes)
 							}
 						}
@@ -87,7 +90,6 @@ function Cars() {
 							name: 'colourId',
 							component: Select,
 							props: {
-								defaultValue: 1,
 								options: getOptions(colours)
 							}
 						}

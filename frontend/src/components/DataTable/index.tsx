@@ -28,9 +28,10 @@ type Props<T extends Record<PropertyKey, any>, V> = {
     title?: string
     isLoading?: boolean
 	onDelete?: (id: number) => Promise<void>
+	initialValues?: Partial<V>
 }
 
-function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, dataSource, save, isLoading, onDelete }: Props<T, V>) {
+function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, dataSource, save, isLoading, onDelete, initialValues }: Props<T, V>) {
 
 	const [messageApi, contextHolder] = message.useMessage()
 
@@ -98,7 +99,7 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 				footer={null}
 				onCancel={hideModal}
 				bodyStyle={{marginTop: '2rem'}}>
-				<Form form={form}>
+				<Form form={form} initialValues={initialValues}>
 					<Wizard steps={save?.steps || []} onSave={onSave} onDone={onDone} summary={summary} minHeight={save.minHeight} />
 				</Form>
 			</Modal>}
