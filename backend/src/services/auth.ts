@@ -42,5 +42,5 @@ export async function login(user: User) {
 
 export function generateAccessToken(username: string) {
     //@ts-ignore
-    return jwt.sign({username}, process.env.JWT_ACCESS_SECRET, { expiresIn: '1800s' });
+    return jwt.sign({username}, process.env.JWT_ACCESS_SECRET, { expiresIn: '18000s' });
 }

@@ -73,6 +73,7 @@ function Cars() {
 							name: 'makeId',
 							component: Select,
 							props: {
+								defaultValue: 1,
 								options: getOptions(makes)
 							}
 						}
@@ -86,6 +87,7 @@ function Cars() {
 							name: 'colourId',
 							component: Select,
 							props: {
+								defaultValue: 1,
 								options: getOptions(colours)
 							}
 						}

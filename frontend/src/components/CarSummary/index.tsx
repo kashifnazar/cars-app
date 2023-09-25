@@ -14,9 +14,9 @@ function CarSummary({car: {make, colour, code}}: Props) {
 		<div>
 			<Text>I have a {make?.name} and the colour is {colour?.name}</Text>
 
-			{colour?.id === 1 && <Text strong>THIS CAR IS RED! NICE!!</Text> }
+			{colour?.id == Number(process.env.REACT_APP_SPECIAL_COLOUR_ID) && <div style={{textTransform: 'uppercase'}}><br/><Text strong>THIS CAR IS {colour?.name}! NICE!!</Text></div> }
 
-			<Text>REF: {code}</Text>
+			<br /><Text>REF: {code}</Text>
 		</div>
 	)
 }
