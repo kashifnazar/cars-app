@@ -1,6 +1,4 @@
 import axios from 'axios'
-import { log } from 'console'
-
 
 const client = axios.create({
 	baseURL: process.env.REACT_APP_SERVER_URL,
@@ -15,7 +13,7 @@ client.interceptors.response.use(function (response) {
 	
 	if(error?.response?.status === 403) {
 		localStorage.removeItem('token')
-		window.location.href = '/cars'
+		window.location.href = '/'
 	}
 	return Promise.reject(error)
 })
