@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React from 'react'
+import React, { useRef } from 'react'
 import Modal from 'antd/es/modal/Modal'
 import Wizard, { Step } from '../Wizard'
 import Title from 'antd/es/typography/Title'
@@ -33,15 +33,28 @@ type Props<T extends Record<PropertyKey, any>, V> = {
 
 function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, dataSource, save, isLoading, onDelete, initialValues }: Props<T, V>) {
 
+	const wizardRef = useRef<{resetWizard: () => void}>(null)
 	const [messageApi, contextHolder] = message.useMessage()
-
-	const { form, open, summary, showModal, hideModal, onSave, onDone, modalTitle } = useSaveModal<V>(save)
+	const { form, open, summary, showModal, hideModal, onDone, modalTitle } = useSaveModal<V>(save)
 
 	const newTitle = save?.createLabel || 'New'
 
 	async function onConfirmDelete(id: number) {
 		await onDelete?.(id)
-		messageApi.success('The record has deleted successfully')
+		messageApi.success('The record was deleted successfully')
+	}
+
+	async function onSaveClicked() {
+		const values = await form.validateFields()
+		await save.onSave(values)
+		messageApi.success('The record was saved successfully')
+		wizardRef.current?.resetWizard()
+		hideModal()
+	}
+
+	function onCancel() {
+		wizardRef.current?.resetWizard()
+		hideModal()
 	}
 
 	function showEditModal(values: V) {
@@ -97,10 +110,10 @@ function DataTable<T extends Record<PropertyKey, any>, V>({ title, columns, data
 				title={modalTitle}
 				open={open}
 				footer={null}
-				onCancel={hideModal}
+				onCancel={onCancel}
 				bodyStyle={{marginTop: '2rem'}}>
 				<Form form={form} initialValues={initialValues}>
-					<Wizard steps={save?.steps || []} onSave={onSave} onDone={onDone} summary={summary} minHeight={save.minHeight} />
+					<Wizard steps={save?.steps || []} onSave={onSaveClicked} onDone={onDone} summary={summary} minHeight={save.minHeight} ref={wizardRef} />
 				</Form>
 			</Modal>}
 		</>

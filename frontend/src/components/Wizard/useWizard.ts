@@ -8,10 +8,14 @@ function useWizard({ steps, onSave, onDone }: UseWizardProps) {
 	const [current, setCurrent] = useState(0)
 	const [buttonText, setButtonText] = useState('Next')
 
+	function reset() {
+		setCurrent(0)
+	}
+
 	async function onOk() {
 		if(current === steps.length) {
 			onSave()
-			setCurrent(0)
+			reset()
 		} if (current === steps.length -1) {
 			onDone?.()
 			moveNext()
@@ -31,6 +35,7 @@ function useWizard({ steps, onSave, onDone }: UseWizardProps) {
 
 	return {
 		onOk,
+		reset,
 		current,
 		buttonText,
 	}

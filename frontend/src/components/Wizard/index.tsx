@@ -1,5 +1,5 @@
 import { Button } from 'antd'
-import React, { ComponentType } from 'react'
+import React, { ComponentType, forwardRef, useEffect, useImperativeHandle } from 'react'
 import WizardStep from './wizard-step'
 import useWizard from './useWizard'
 
@@ -28,14 +28,25 @@ export type Props = {
     onDone?: () => void
 }
 
-function Wizard({ steps, summary, onSave, onDone, minHeight }: Props){
+const Wizard = forwardRef<{resetWizard: () => void}, Props>(function Wizard({ steps, summary, onSave, onDone, minHeight }, ref){
 
-	const { onOk, buttonText, current } = useWizard({ steps, onSave, summary, onDone })
+	const { onOk, buttonText, current, reset } = useWizard({ steps, onSave, summary, onDone })
+
+	useImperativeHandle(ref, () => ({
+		resetWizard() {
+			reset()
+		}
+	}))
+
+
+	useEffect(() => {
+		if(!summary) reset()
+	}, [summary])
 
 	return (
 		<>
 			<div style={{minHeight}}>
-				{steps.map(function getStep({key, ...step}, i){
+				{steps.map(function getStep({ key, ...step }, i){
 					return <WizardStep key={key ?? 'step' + i} hide={current != i} {...step} />
 				})}
 				{summary}
@@ -45,6 +56,6 @@ function Wizard({ steps, summary, onSave, onDone, minHeight }: Props){
 			</div>
 		</>
 	)
-}
+})
 
 export default Wizard

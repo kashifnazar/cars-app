@@ -15,6 +15,7 @@ export default function useSaveModal<V>(save: SaveConfig<V>) {
 
 	function showModal({ title }: ModalConfig) {
 		setTitle(title)
+		setSummary(undefined)
 		form.resetFields()
 		setOpen(true)
 	}
@@ -30,20 +31,14 @@ export default function useSaveModal<V>(save: SaveConfig<V>) {
 		setSummary(summary)
 	}
 
-	async function onSave() {
-		const values = await form.validateFields()
-		await save.onSave(values)
-		hideModal()
-	}
-
 	return {
 		open,
 		form,
 		summary,
-		onSave,
 		onDone,
 		showModal,
 		hideModal,
+		setSummary,
 		modalTitle: title
 	}
 
